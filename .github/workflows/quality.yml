@@ -1,0 +1,24 @@
+name: quality
+
+on:
+  push:
+    branches:
+      - main
+      - 'abdul/**'
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  static-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check JavaScript syntax
+        run: node --check script.js
+
+      - name: Run static quality audit
+        run: python3 scripts/quality_check.py
