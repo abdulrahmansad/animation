@@ -6,6 +6,19 @@
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const lerp = (a, b, t) => a + (b - a) * t;
 
+  // Production hardening discovered during final review. Keep the native
+  // cursor available when custom motion is disabled and expose the particle
+  // field instead of spending animation work underneath opaque sections.
+  const productionStyle = document.createElement('style');
+  productionStyle.textContent = `
+    #particle-canvas { z-index: 3; opacity: .22; }
+    @media (prefers-reduced-motion: reduce) {
+      body { cursor: auto !important; }
+      a, button, [role="button"] { cursor: pointer !important; }
+    }
+  `;
+  document.head.appendChild(productionStyle);
+
   const xrayLayer = document.querySelector('.xray-layer');
   if (xrayLayer) {
     xrayLayer.style.background = 'rgba(5, 5, 5, .76)';
@@ -218,6 +231,46 @@
       requestAnimationFrame(animateSignal);
     };
     requestAnimationFrame(animateSignal);
+  }
+
+  // Keyboard fallback for the Motion Lab. Pointer users can drag freely;
+  // keyboard users get an equivalent visible physics reaction via arrows or
+  // Enter/Space without fighting the original lab RAF loop.
+  const labCore = document.querySelector('.lab-core');
+  const labSatellites = [...document.querySelectorAll('.motion-lab .satellite')];
+  if (labCore) {
+    labCore.setAttribute('aria-label', 'Interactive motion core. Drag with pointer or use arrow keys, Enter, or Space for keyboard motion.');
+    labCore.addEventListener('keydown', (event) => {
+      const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', ' '];
+      if (!keys.includes(event.key)) return;
+      event.preventDefault();
+
+      const vector = {
+        ArrowUp: [0, -34],
+        ArrowDown: [0, 34],
+        ArrowLeft: [-34, 0],
+        ArrowRight: [34, 0],
+        Enter: [0, 0],
+        ' ': [0, 0]
+      }[event.key];
+
+      if (!reducedMotion && labCore.animate) {
+        const [dx, dy] = vector;
+        labCore.animate([
+          { translate: '0 0', scale: 1 },
+          { translate: `${dx}px ${dy}px`, scale: 1.08 },
+          { translate: '0 0', scale: 1 }
+        ], { duration: 430, easing: 'cubic-bezier(.16,1,.3,1)' });
+
+        labSatellites.forEach((satellite, index) => {
+          satellite.animate([
+            { translate: '0 0' },
+            { translate: `${dx * (1.7 + index * .55)}px ${dy * (1.7 + index * .55)}px` },
+            { translate: '0 0' }
+          ], { duration: 560 + index * 90, easing: 'cubic-bezier(.16,1,.3,1)' });
+        });
+      }
+    });
   }
 
   document.addEventListener('visibilitychange', () => {
