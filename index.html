@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#070707" />
+  <meta name="description" content="MOTION/01 — an interactive one-page experiment in kinetic type, spatial UI and browser-native motion." />
+  <title>MOTION/01 — Make Motion Matter</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./signature.css" />
+</head>
+<body>
+  <div class="boot" aria-hidden="true">
+    <div class="boot__counter">00</div>
+    <div class="boot__line"><span></span></div>
+    <div class="boot__label">LOADING MOTION SYSTEM</div>
+  </div>
+
+  <div class="noise" aria-hidden="true"></div>
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+  <div class="cursor cursor--dot" aria-hidden="true"></div>
+  <div class="cursor cursor--ring" aria-hidden="true"><span>VIEW</span></div>
+  <div class="scroll-progress" aria-hidden="true"><span></span></div>
+
+  <div class="xray-layer" aria-hidden="true">
+    <div class="xray-grid"></div>
+    <div class="xray-crosshair xray-crosshair--x"></div>
+    <div class="xray-crosshair xray-crosshair--y"></div>
+    <div class="xray-reticle"><i></i><i></i></div>
+    <div class="xray-readout xray-readout--tl">SYSTEM / LIVE</div>
+    <div class="xray-readout xray-readout--tr" id="xray-section">SECTION / 01</div>
+    <div class="xray-readout xray-readout--bl" id="xray-pointer">PTR 0000 / 0000</div>
+    <div class="xray-readout xray-readout--br" id="xray-velocity">VEL 0.0 · SCR 0.0</div>
+    <div class="xray-center-label">INPUT FIELD</div>
+  </div>
+
+  <header class="topbar">
+    <a class="brand magnetic" href="#top" aria-label="MOTION 01 home">
+      <span class="brand__mark"></span>
+      <span>MOTION/01</span>
+    </a>
+    <div class="topbar__meta">
+      <span aria-hidden="true">INTERACTIVE STUDY</span>
+      <button class="xray-toggle magnetic" type="button" aria-pressed="false" aria-label="Toggle X-ray motion view">
+        <span class="xray-toggle__dot" aria-hidden="true"></span>
+        X-RAY
+      </button>
+      <span class="live-dot" aria-hidden="true">LIVE</span>
+    </div>
+    <a class="pill magnetic" href="#lab">ENTER LAB <span>↘</span></a>
+  </header>
+
+  <main id="top">
+    <section class="hero section" data-theme="dark" data-xray-label="KINETIC FIELD">
+      <div class="hero__eyebrow reveal-up">
+        <span>WEB MOTION, WITHOUT THE TEMPLATE ENERGY.</span>
+        <span>01 / 06</span>
+      </div>
+
+      <div class="hero__title" aria-label="Make motion matter">
+        <div class="kinetic-line" data-direction="1">
+          <span class="kinetic-word">MAKE</span>
+          <span class="kinetic-ghost" aria-hidden="true">MAKE</span>
+        </div>
+        <div class="kinetic-line kinetic-line--outline" data-direction="-1">
+          <span class="kinetic-word">MOTION</span>
+          <span class="kinetic-ghost" aria-hidden="true">MOTION</span>
+        </div>
+        <div class="kinetic-line" data-direction="1">
+          <span class="kinetic-word">MATTER.</span>
+          <span class="kinetic-ghost" aria-hidden="true">MATTER.</span>
+        </div>
+      </div>
+
+      <div class="hero__footer">
+        <div class="hero__note reveal-up">
+          <span class="index">[ A ]</span>
+          <p>Move your cursor. Scroll slowly.<br />The interface is listening.</p>
+        </div>
+        <button class="orbital magnetic" type="button" data-scroll="#manifesto" aria-label="Scroll to manifesto">
+          <svg viewBox="0 0 160 160" role="img" aria-hidden="true">
+            <defs>
+              <path id="circlePath" d="M80,80 m-58,0 a58,58 0 1,1 116,0 a58,58 0 1,1 -116,0" />
+            </defs>
+            <text>
+              <textPath href="#circlePath">SCROLL TO BREAK THE GRID • SCROLL TO BREAK THE GRID • </textPath>
+            </text>
+          </svg>
+          <span class="orbital__arrow">↓</span>
+        </button>
+        <div class="hero__note hero__note--right reveal-up">
+          <span class="index">[ B ]</span>
+          <p>Press X at any time.<br />See what the interface sees.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="manifesto section" id="manifesto" data-theme="light" data-xray-label="PRINCIPLE LAYER">
+      <div class="section-label">
+        <span>02 / PRINCIPLE</span>
+        <span>WHY MOTION?</span>
+      </div>
+
+      <div class="manifesto__copy">
+        <p class="manifesto__lead">Most animation is decoration.</p>
+        <p class="manifesto__statement split-lines">
+          Good motion tells you <em>where to look</em>, what changed, what matters next—and makes a digital surface feel less like software and more like a place.
+        </p>
+      </div>
+
+      <div class="manifesto__rail" aria-label="Motion principles">
+        <article class="principle-card tilt-card">
+          <span class="principle-card__num">01</span>
+          <h3>INTENT</h3>
+          <p>Every movement earns its place. Nothing wiggles just because it can.</p>
+          <div class="card-signal" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="principle-card tilt-card">
+          <span class="principle-card__num">02</span>
+          <h3>RHYTHM</h3>
+          <p>Fast, slow, pause, impact. Timing creates hierarchy before typography does.</p>
+          <div class="rhythm-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="principle-card tilt-card">
+          <span class="principle-card__num">03</span>
+          <h3>FEEDBACK</h3>
+          <p>The interface reacts. Hover, drag, click and scroll should feel acknowledged.</p>
+          <div class="feedback-target" aria-hidden="true"><i></i><span></span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="systems section" id="systems" data-theme="dark" data-xray-label="BEHAVIOR STACK">
+      <div class="section-label section-label--dark">
+        <span>03 / SYSTEMS</span>
+        <span>THREE WAYS TO MOVE</span>
+      </div>
+
+      <div class="systems__intro">
+        <h2 class="display-heading">MOTION<br /><span>IS A SYSTEM.</span></h2>
+        <p>Not a bag of effects. These three layers work together and respond to your input in real time.</p>
+      </div>
+
+      <div class="system-list">
+        <article class="system-row" data-mode="type">
+          <span class="system-row__index">01</span>
+          <h3>KINETIC TYPE</h3>
+          <p>Words behave like objects.</p>
+          <span class="system-row__icon">↗</span>
+          <div class="system-row__preview preview-type" aria-hidden="true"><span>TYPE</span><span>TYPE</span><span>TYPE</span></div>
+        </article>
+        <article class="system-row" data-mode="physics">
+          <span class="system-row__index">02</span>
+          <h3>MICRO PHYSICS</h3>
+          <p>Inputs create momentum.</p>
+          <span class="system-row__icon">↗</span>
+          <div class="system-row__preview preview-physics" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="system-row" data-mode="space">
+          <span class="system-row__index">03</span>
+          <h3>SPATIAL UI</h3>
+          <p>Depth gives context.</p>
+          <span class="system-row__icon">↗</span>
+          <div class="system-row__preview preview-space" aria-hidden="true"><i></i><i></i><i></i></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="signal section" id="signal" data-theme="dark" data-xray-label="DISTORTION CHAMBER">
+      <div class="section-label section-label--dark">
+        <span>04 / SIGNAL</span>
+        <span>VELOCITY BECOMES SHAPE</span>
+      </div>
+
+      <div class="signal__intro">
+        <p class="signal__kicker">THIS ONE REACTS TO HOW YOU MOVE.</p>
+        <h2>DON'T JUST<br />SCROLL.<br /><em>DISTURB IT.</em></h2>
+      </div>
+
+      <div class="signal-stage" id="signal-stage" tabindex="0" role="application" aria-label="Interactive typography distortion chamber. Move the pointer quickly or press Enter to rupture the word motion.">
+        <div class="signal-stage__grid" aria-hidden="true"></div>
+        <svg class="signal-svg" viewBox="0 0 1200 520" role="img" aria-label="The word motion distorts in response to your pointer speed">
+          <defs>
+            <filter id="signal-distort" x="-25%" y="-35%" width="150%" height="170%">
+              <feTurbulence id="signal-noise" type="fractalNoise" baseFrequency="0.006 0.02" numOctaves="2" seed="7" result="noise" />
+              <feDisplacementMap id="signal-displace" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="B" />
+            </filter>
+          </defs>
+          <text class="signal-word signal-word--ghost" x="50%" y="58%" text-anchor="middle">MOTION</text>
+          <text class="signal-word" x="50%" y="58%" text-anchor="middle" filter="url(#signal-distort)">MOTION</text>
+        </svg>
+        <div class="signal-scan" aria-hidden="true"></div>
+        <div class="signal-cursor" aria-hidden="true"><span></span></div>
+        <div class="signal-hud signal-hud--tl">MOVE FAST / CLICK TO RUPTURE</div>
+        <div class="signal-hud signal-hud--tr" id="signal-force">FORCE 000</div>
+        <div class="signal-hud signal-hud--bl" id="signal-frequency">FREQ .006</div>
+        <div class="signal-hud signal-hud--br">LIVE SVG FILTER</div>
+      </div>
+    </section>
+
+    <section class="playground section" id="lab" data-theme="acid" data-xray-label="SPRING SIMULATION">
+      <div class="section-label">
+        <span>05 / PLAYGROUND</span>
+        <span>MOVE SOMETHING</span>
+      </div>
+
+      <div class="playground__heading">
+        <h2>THE MOTION LAB</h2>
+        <p>Drag the core. The satellites follow with different inertia. This is not a GIF.</p>
+      </div>
+
+      <div class="motion-lab" id="motion-lab" aria-label="Interactive physics playground">
+        <div class="lab-grid" aria-hidden="true"></div>
+        <div class="lab-hud lab-hud--tl">INPUT / POINTER</div>
+        <div class="lab-hud lab-hud--tr"><span id="velocity-readout">VEL 0.00</span></div>
+        <div class="lab-hud lab-hud--bl">DRAG CORE</div>
+        <div class="lab-hud lab-hud--br">SPRING / 0.14</div>
+        <div class="satellite satellite--3" aria-hidden="true">03</div>
+        <div class="satellite satellite--2" aria-hidden="true">02</div>
+        <div class="satellite satellite--1" aria-hidden="true">01</div>
+        <button class="lab-core" type="button" aria-label="Drag interactive motion core">
+          <span>DRAG</span>
+          <i></i>
+        </button>
+      </div>
+
+      <div class="metrics" aria-label="Experience metrics">
+        <div class="metric"><span class="metric__value" data-count="60">0</span><small>FPS TARGET</small></div>
+        <div class="metric"><span class="metric__value" data-count="0">0</span><small>VIDEO FILES</small></div>
+        <div class="metric"><span class="metric__value" data-count="100">0</span><small>% INTERACTIVE</small></div>
+        <div class="metric"><span class="metric__value">∞</span><small>REPLAY VALUE</small></div>
+      </div>
+    </section>
+
+    <section class="finale section" data-theme="dark" data-xray-label="REPLAY LOOP">
+      <div class="finale__ticker" aria-hidden="true">
+        <div>INTERACTION • TIMING • DEPTH • FEEDBACK • INTERACTION • TIMING • DEPTH • FEEDBACK •</div>
+        <div>INTERACTION • TIMING • DEPTH • FEEDBACK • INTERACTION • TIMING • DEPTH • FEEDBACK •</div>
+      </div>
+
+      <div class="finale__content">
+        <span class="finale__kicker">06 / END? NOT REALLY.</span>
+        <h2>
+          <span>STILL</span>
+          <span class="outline">SCROLLING?</span>
+          <span>GOOD.</span>
+        </h2>
+        <p>The best interfaces make curiosity useful.</p>
+        <a class="giant-cta magnetic" href="#top">
+          <span>RUN IT AGAIN</span>
+          <i>↟</i>
+        </a>
+      </div>
+
+      <footer class="footer">
+        <span>MOTION/01</span>
+        <span>DESIGNED IN THE BROWSER</span>
+        <span>© 2026 — EXPERIMENT, DON’T DECORATE.</span>
+      </footer>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+  <script src="./signature.js"></script>
+</body>
+</html>
