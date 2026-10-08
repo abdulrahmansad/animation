@@ -2,10 +2,22 @@
   'use strict';
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
   const root = document.documentElement;
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const lerp = (a, b, t) => a + (b - a) * t;
+
+  // Keep the loader theatrical, not obstructive. The page is static and does
+  // not need a fake multi-second loading state.
+  if (!reducedMotion) {
+    window.setTimeout(() => {
+      const boot = document.querySelector('.boot');
+      const counter = document.querySelector('.boot__counter');
+      const line = document.querySelector('.boot__line span');
+      if (counter) counter.textContent = '100';
+      if (line) line.style.width = '100%';
+      boot?.classList.add('is-done');
+    }, 520);
+  }
 
   // -------------------------------------------------------------------------
   // X-RAY MODE — the interface exposes the motion data it is already reading.
@@ -100,7 +112,9 @@
     requestAnimationFrame(updateXray);
   };
 
-  if (!coarsePointer || xrayActive) requestAnimationFrame(updateXray);
+  // Always keep this tiny telemetry loop alive. On touch devices it means an
+  // X-ray toggle works even if no hover/pointer stream existed beforehand.
+  requestAnimationFrame(updateXray);
 
   // -------------------------------------------------------------------------
   // DISTORTION CHAMBER — cursor velocity becomes displacement intensity.
@@ -200,8 +214,6 @@
     requestAnimationFrame(animateSignal);
   }
 
-  // Keep hidden tabs quiet for this layer; the original experience remains
-  // untouched and browser-native.
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
       previousPointerX = pointerX;
