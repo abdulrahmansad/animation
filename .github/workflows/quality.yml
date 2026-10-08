@@ -17,6 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
       - name: Check JavaScript syntax
         run: |
           node --check script.js
@@ -24,3 +29,9 @@ jobs:
 
       - name: Run static quality audit
         run: python3 scripts/quality_check.py
+
+      - name: Install preview/build dependency
+        run: npm install --no-audit --no-fund
+
+      - name: Build production bundle
+        run: npm run build
