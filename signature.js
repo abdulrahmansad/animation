@@ -6,16 +6,24 @@
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
   const lerp = (a, b, t) => a + (b - a) * t;
 
+  const xrayLayer = document.querySelector('.xray-layer');
+  if (xrayLayer) {
+    xrayLayer.style.background = 'rgba(5, 5, 5, .76)';
+    xrayLayer.style.backdropFilter = 'grayscale(1) contrast(1.28)';
+    xrayLayer.style.webkitBackdropFilter = 'grayscale(1) contrast(1.28)';
+  }
+
   // Keep the loader theatrical, not obstructive. The page is static and does
   // not need a fake multi-second loading state.
+  const bootShell = document.querySelector('.boot');
+  if (bootShell) bootShell.style.transitionDuration = reducedMotion ? '0s' : '.68s';
   if (!reducedMotion) {
     window.setTimeout(() => {
-      const boot = document.querySelector('.boot');
       const counter = document.querySelector('.boot__counter');
       const line = document.querySelector('.boot__line span');
       if (counter) counter.textContent = '100';
       if (line) line.style.width = '100%';
-      boot?.classList.add('is-done');
+      bootShell?.classList.add('is-done');
     }, 520);
   }
 
@@ -112,8 +120,6 @@
     requestAnimationFrame(updateXray);
   };
 
-  // Always keep this tiny telemetry loop alive. On touch devices it means an
-  // X-ray toggle works even if no hover/pointer stream existed beforehand.
   requestAnimationFrame(updateXray);
 
   // -------------------------------------------------------------------------
