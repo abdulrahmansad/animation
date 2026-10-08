@@ -4,8 +4,8 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 HTML = ROOT / "index.html"
-CSS = ROOT / "styles.css"
-JS = ROOT / "script.js"
+CSS_FILES = [ROOT / "styles.css", ROOT / "signature.css"]
+JS_FILES = [ROOT / "script.js", ROOT / "signature.js"]
 
 
 class AuditParser(HTMLParser):
@@ -40,7 +40,7 @@ def fail(message):
     raise SystemExit(f"QUALITY CHECK FAILED: {message}")
 
 
-for required in (HTML, CSS, JS):
+for required in [HTML, *CSS_FILES, *JS_FILES]:
     if not required.exists():
         fail(f"missing required file: {required.name}")
 
@@ -67,19 +67,27 @@ if parser.images_without_alt:
 if parser.buttons_without_label:
     fail(f"button(s) missing accessible label: {', '.join(parser.buttons_without_label)}")
 
-css = CSS.read_text(encoding="utf-8")
-if css.count("{") != css.count("}"):
-    fail("unbalanced CSS braces")
+for css_file in CSS_FILES:
+    css = css_file.read_text(encoding="utf-8")
+    if css.count("{") != css.count("}"):
+        fail(f"unbalanced CSS braces in {css_file.name}")
 
-js = JS.read_text(encoding="utf-8")
-if "prefers-reduced-motion" not in js or "prefers-reduced-motion" not in css:
-    fail("reduced-motion support must exist in both CSS and JS")
+combined_css = "\n".join(path.read_text(encoding="utf-8") for path in CSS_FILES)
+combined_js = "\n".join(path.read_text(encoding="utf-8") for path in JS_FILES)
+if "prefers-reduced-motion" not in combined_js or "prefers-reduced-motion" not in combined_css:
+    fail("reduced-motion support must exist in CSS and JS")
 
 html = HTML.read_text(encoding="utf-8")
 for landmark in ("<header", "<main", "<section", "<footer"):
     if landmark not in html:
         fail(f"missing semantic landmark: {landmark}")
 
+for required_signature in ("xray-toggle", "signal-stage", "signal-distort"):
+    if required_signature not in html:
+        fail(f"missing signature experience hook: {required_signature}")
+
 print("Static quality checks passed.")
 print(f"IDs checked: {len(parser.ids)}")
 print(f"Local references checked: {len(parser.local_refs)}")
+print(f"CSS files checked: {len(CSS_FILES)}")
+print(f"JS files checked: {len(JS_FILES)}")
